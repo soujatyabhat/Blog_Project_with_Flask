@@ -6,6 +6,7 @@ import datetime
 
 app = Flask(__name__)
 
+
 #Create connection
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/blog'
 
