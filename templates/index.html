@@ -29,32 +29,32 @@
   {% block body %}
   <!-- Main Content -->
   <div class="container">
+    <hr>
+    {% for post in posts %}
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <hr>
         <div class="post-preview">
-          <a href="post.html">
+          <a href="post_details/{{ post.slug }}">
             <h2 class="post-title">
-              Science has not yet mastered prophecy
+              {{ post.title }}
             </h2>
-            <h3 class="post-subtitle">
-              We predict too much for the next year and yet far too little for the next ten.
-            </h3>
+            <h4 class="post-subtitle">
+              {{ post.tagline }}
+            </h4>
+            <p class="post-meta">Posted by
+              <a href="#"> Admin </a>
+              {{ post.date }}
+            </p>
+            <p class="post-subtitle">
+              {{ post.content[0:70] }}..
+            </p>
           </a>
-          <p class="post-meta">Posted by
-            <a href="#">Start Bootstrap</a>
-            on August 24, 2019</p>
-        </div>
-        <hr>
-        <hr>
-        <!-- Pager -->
-        <div class="clearfix">
-          <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
         </div>
       </div>
     </div>
+    {% endfor %}
+    <hr>
   </div>
-
   <!-- Bootstrap core JavaScript -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
