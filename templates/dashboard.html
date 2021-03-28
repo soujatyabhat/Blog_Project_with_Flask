@@ -2,7 +2,13 @@
 <html>
 <head> <title> Dashboard </title>  </head>
    <!-- Bootstrap core CSS -->
-   <link href="https://getbootstrap.com/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Custom styles for this template -->
+   <link href="../static/css/clean-blog.css" rel="stylesheet">
+   <!-- Custom fonts for this template -->
+   <link href="../static/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+   <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+   <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 <style>
 * {
   box-sizing: border-box;
@@ -71,24 +77,16 @@ input[type=submit]:hover {
 </style>
 </head>
 <body>
-
-<div class="container">
-            <header class="pb-3 mb-4 border-bottom">
-                <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" class="me-2" viewBox="0 0 118 94" role="img"><title>Bootstrap</title><path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z" fill="currentColor"></path></svg>
-                <span class="fs-4"> POST Dashboard </span>
-                </a>
-                <p align = "right"> <a href="/logout"> <img src="https://img.icons8.com/carbon-copy/100/000000/logout-rounded-down.png" width = "50px" height="50px" title = "Logout"></a> </p>
-            </header>
-
-        <div class="container_one">
-        <form action="/submit1" method = "POST" enctype="multipart/form-data">
+{% extends "layout1.html" %}
+{% block body %}
+<div class="container_one">
+    <form action="/submit1" method = "POST" enctype="multipart/form-data">
         <div class="row">
             <div class="col-25">
             <label for="fname"> Title  <sup style = "color:red;"> * </sup> </label>
             </div>
             <div class="col-75">
-            <input type="text"  name="title" placeholder="Max Length 80" maxlenth = "80" required>
+            <input type="text"  name="title" placeholder="Max Length 80"  maxlength = "80" required autofocus>
             </div>
         </div>
         <div class="row">
@@ -96,7 +94,7 @@ input[type=submit]:hover {
             <label for="lname">Tag Line <sup style = "color:red;"> * </sup> </label>
             </div>
             <div class="col-75">
-            <input type="text" name="tagline" placeholder="Max Length 100" maxlength="1000" required>
+            <input type="text" name="tagline" placeholder="Max Length 100"  maxlength="100" required>
             </div>
         </div>
         <div class="row">
@@ -109,20 +107,34 @@ input[type=submit]:hover {
         </div>
         <div class="row">
             <div class="col-25">
-            <label for="lname"> Banner  <sup style = "color:red;"> * </sup> </label>
+            <label for="lname"> Image  <sup style = "color:red;"> * </sup> </label>
             </div>
             <div class="col-75">
-            <input type="file"  name="banner" required>
+            <input type="file"  name="file" accept="image/*" required>
             </div>
         </div>
-        <br>
         <div class="row">
-                <input type="submit" value="Submit" class = "btn btn-primary btn-lg active">
+          <div class="col-25">
+          <label for="lname"> Image Caption <sup style = "color:red;"> * </sup> </label>
+          </div>
+          <div class="col-75">
+          <input type="text" name="file-caption" placeholder="Max Length 200"  maxlength="200" required>
+          </div>
+      </div>
+        <br>
+        <div>
+            <center>
+                <button type="submit" class="btn btn-success" id="sendMessageButton"> Submit </button>
+                <button type="reset" class="btn btn-danger" id="sendMessageButton"> Reset </button>
+            </center> 
         </div>
-        </form>
-        </div>
+    </form>
+  </div>
         <p> {{ status }} </p>
-        <hr>
+        <ul  style = "list-style-image: url('../static/img/left-arrow.png');">
+          <li> <a href = "/view-more" style="text-decoration: none; font-size: 20pt;"> View More </a> </li>
+        </ul>
     </div>
+{% endblock %}
 </body>
 </html>

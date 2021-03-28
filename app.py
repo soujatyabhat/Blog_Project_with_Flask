@@ -4,6 +4,10 @@ import datetime
 from flask_mail import Mail
 import hashlib as has
 from flask import session
+from werkzeug.utils import secure_filename
+import os
+
+UPLOAD_FOLDER = 'E:\\Flask\\project2\\static\\dump'
 
 app = Flask(__name__)
 app.secret_key = 'super-secret-key'
@@ -39,7 +43,8 @@ class posts(db.Model):
     slug = db.Column(db.String(255), nullable=False)
     content = db.Column(db.String(1000), nullable=False)
     date = db.Column(db.String(12), nullable=True)
-    #img_file = db.Column(db.String(12), nullable=True)
+    image = db.Column(db.String(50), nullable=True)
+    image_caption = db.Column(db.String(255), nullable=True)
     
 class sign_in(db.Model):
     email = db.Column(db.String(50), primary_key=True)
@@ -86,7 +91,7 @@ def save():
 @app.route("/login", methods=['GET'])
 def login():
     if "email" in session:
-        return render_template('dashboard.html',status = "Connected!!")
+        return render_template('dashboard.html',year = x.strftime("%Y"))
     else:
         return render_template('login.html')
 
@@ -99,7 +104,7 @@ def dashboard():
         sign = sign_in.query.filter_by(email = email).first()
                 
         if sign.email == email and sign.password == password:   
-            return render_template('dashboard.html')
+            return render_template('dashboard.html',year = x.strftime("%Y"))
         else:
             return render_template('login.html', status = "Password Failed!!")
              
@@ -111,7 +116,12 @@ def submit1():
         tagline  = request.form['tagline']
         content = request.form['content']
         slug = '-'.join(request.form['tagline'].split(" "))
-        entry = posts(title = title,tagline = tagline, content = content, slug = slug)
+        
+        file = request.files['file']
+        caption = request.form['file-caption']
+        
+        file.save(os.path.join(UPLOAD_FOLDER, secure_filename(file.filename)))
+        entry = posts(title = title,tagline = tagline, content = content, slug = slug,image = secure_filename(file.filename), image_caption = caption)
         db.session.add(entry)
         db.session.commit()
     return render_template('dashboard.html',status = "Data has saved")
@@ -125,6 +135,6 @@ def logout():
 @app.route("/post_details/<string:post_slug>", methods=['GET'])
 def post_route(post_slug):
     post = posts.query.filter_by(slug=post_slug).first()
-    return render_template('post.html', post=post,banner = "post-bg.jpg", heading = post.title, heading_footer = post.tagline)
+    return render_template('post.html', post=post,banner = "post-bg.jpg", heading = "Post", heading_footer = "Tech Blog")
 
 app.run()
