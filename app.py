@@ -2,9 +2,11 @@ from flask import Flask,render_template,url_for,request,redirect
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 from flask_mail import Mail
+import hashlib as has
+from flask import session
 
 app = Flask(__name__)
-
+app.secret_key = 'super-secret-key'
 
 #Create connection
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/blog'
@@ -83,19 +85,42 @@ def save():
 
 @app.route("/login", methods=['GET'])
 def login():
-    return render_template('login.html')
+    if "email" in session:
+        return render_template('dashboard.html',status = "Connected!!")
+    else:
+        return render_template('login.html')
 
-@app.route("/dashboard", methods=['GET','POST'])
+@app.route("/dashboard", methods = ['GET','POST'])
 def dashboard():
-        if(request.method == 'POST'):
-            email = request.form['email']
-            password  = request.form['password']
-            sign = sign_in.query.filter_by(email = email).first()
-            
-            if sign.email == email and sign.password == password:
-                return render_template('dashboard.html',status = "Connected!!")
-            else:
-                return render_template('dashboard.html',status = "Disconnected!!")
+    if(request.method == 'POST'):
+        email = request.form['email']
+        password  = request.form['password']
+        session["email"] = email
+        sign = sign_in.query.filter_by(email = email).first()
+                
+        if sign.email == email and sign.password == password:   
+            return render_template('dashboard.html')
+        else:
+            return render_template('login.html', status = "Password Failed!!")
+             
+
+@app.route("/submit1", methods=['GET','POST'])
+def submit1():
+    if (request.method == 'POST'):
+        title = request.form['title']
+        tagline  = request.form['tagline']
+        content = request.form['content']
+        slug = '-'.join(request.form['tagline'].split(" "))
+        entry = posts(title = title,tagline = tagline, content = content, slug = slug)
+        db.session.add(entry)
+        db.session.commit()
+    return render_template('dashboard.html',status = "Data has saved")
+
+
+@app.route("/logout", methods = ['GET','POST'])
+def logout():
+    session.pop('email', None)
+    return render_template('login.html')
 
 @app.route("/post_details/<string:post_slug>", methods=['GET'])
 def post_route(post_slug):
