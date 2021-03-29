@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> View More </title>
+    <!-- Bootstrap core CSS -->
+   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Custom fonts for this template -->
+   <link href="../static/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+   <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+   <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+</head>
+<body>
+{% extends "layout1.html" %}
+{% block body %}
+    <table class="table table-bordered table-dark">
+        <thead>
+          <tr>
+            <th scope="col"> Sno.</th>
+            <th scope="col"> Tagline </th>
+            <th scope="col"> Content  </th>
+            <th scope="col" colspan="3"> Controls </th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for post in posts %}
+            {% set count = 1 %}
+            <tr>
+                <td> {{ post.sno }}</th>
+                <td> {{ post.tagline }} </td>
+                <td> {{ post.content[0:30] }}.. </td>
+                <td colspan="3">
+                     <a href = "/update?sno={{ post.sno }}" class="btn btn-success btn-sm"> Update </a>
+                     <a href = "/delete?sno={{ post.sno }}" class="btn btn-danger btn-sm"> Delete </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+      <ul  style = "list-style-image: url('../static/img/left-arrow.png');">
+        <li> <a href = "/login" style="text-decoration: none; font-size: 20pt;"> Back </a> </li>
+      </ul>
+      <center>
+        {% endblock %}
+      </center>    
+</body>
+</html>

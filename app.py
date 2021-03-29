@@ -91,7 +91,7 @@ def save():
 @app.route("/login", methods=['GET'])
 def login():
     if "email" in session:
-        return render_template('dashboard.html',year = x.strftime("%Y"))
+        return render_template('dashboard.html', banner = "Dashboard", year = x.strftime("%Y"))
     else:
         return render_template('login.html')
 
@@ -104,11 +104,24 @@ def dashboard():
         sign = sign_in.query.filter_by(email = email).first()
                 
         if sign.email == email and sign.password == password:   
-            return render_template('dashboard.html',year = x.strftime("%Y"))
+            return render_template('dashboard.html',year = x.strftime("%Y"), banner = "Updte Dashboard")
         else:
             return render_template('login.html', status = "Password Failed!!")
              
+@app.route("/view-more", methods = ['GET','POST'])
+def view_more(): 
+    p = posts.query.order_by(posts.sno).all()
+    return render_template('others.html', posts = p,banner = "All Posts", year = x.strftime("%Y"))
+        
+@app.route('/update',methods = ['GET'])  
+def update_post(): 
+    sno = request.args.get('sno')
+    p = posts.query.order_by(posts.sno).filter_by(sno = sno).first()
+    return render_template('dashboard_update.html', posts = p, banner = "Update Dashboard", year = x.strftime("%Y"))
 
+@app.route('/delete',methods = ['GET'])  
+def delete_post(): 
+        
 @app.route("/submit1", methods=['GET','POST'])
 def submit1():
     if (request.method == 'POST'):
@@ -125,6 +138,27 @@ def submit1():
         db.session.add(entry)
         db.session.commit()
     return render_template('dashboard.html',status = "Data has saved")
+
+@app.route("/submit2", methods=['GET','POST'])
+def submit2():
+    if (request.method == 'POST'):
+        sno = request.form['sno']
+        title = request.form['title']
+        tagline  = request.form['tagline']
+        content = request.form['content']
+        caption = request.form['file-caption']
+        
+        #find row which will be modify soon
+        post = posts.query.filter_by(sno = sno).first()
+        post.title = title
+        post.tagline = tagline
+        post.content = content
+        post.image_caption = caption
+        db.session.commit()
+        
+        #return all row from table
+        p = posts.query.order_by(posts.sno).all()
+    return render_template('others.html', posts = p,banner = "All Posts", year = x.strftime("%Y"))
 
 
 @app.route("/logout", methods = ['GET','POST'])

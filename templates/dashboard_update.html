@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head> <title> Dashboard </title>  </head>
+   <!-- Bootstrap core CSS -->
+   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Custom styles for this template -->
+   <link href="../static/css/clean-blog.css" rel="stylesheet">
+   <!-- Custom fonts for this template -->
+   <link href="../static/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+   <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+   <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.container_one {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  margin: 50px 50px;
+  padding: 30px;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+</style>
+</head>
+<body>
+{% extends "layout1.html" %}
+{% block body %}
+<div class="container_one">
+    <form action="/submit2" method = "POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-25">
+            <label for="fname"> Title  <sup style = "color:red;"> * </sup> </label>
+            </div>
+            <div class="col-75">
+            <input type="text"  name="title" value = "{{ posts.title }}" placeholder="Max Length 80"  maxlength = "80" required autofocus>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+            <label for="lname">Tag Line <sup style = "color:red;"> * </sup> </label>
+            </div>
+            <div class="col-75">
+            <input type="text" name="tagline" value = "{{ posts.tagline }}" placeholder="Max Length 100"  maxlength="100" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+            <label for="subject"> Content <sup style = "color:red;"> * </sup> </label>
+            </div>
+            <div class="col-75">
+            <textarea name="content"  placeholder="Max Length 1000" maxlength="1000" style="height:200px" required> {{ posts.content }} </textarea>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+          <label for="lname"> Image Caption <sup style = "color:red;"> * </sup> </label>
+          </div>
+          <div class="col-75">
+          <input type="text" name="file-caption" value = "{{ posts.image_caption }}" placeholder="Max Length 200"  maxlength="200" required>
+          </div>
+      </div>
+        <br>
+        <div>
+            <center>
+                <button type="submit" class="btn btn-success" id="sendMessageButton"> Submit </button>
+                <button type="reset" class="btn btn-danger" id="sendMessageButton"> Reset </button>
+            </center> 
+        </div>
+        <div>
+            <input type = "hidden" name = "sno" value = "{{ posts.sno }}"/>
+        </div>
+    </form>
+  </div>
+        <p> {{ status }} </p>
+        <ul  style = "list-style-image: url('../static/img/left-arrow.png');">
+          <li> <a href = "/view-more" style="text-decoration: none; font-size: 20pt;"> Back </a> </li>
+        </ul>
+    </div>
+{% endblock %}
+</body>
+</html>
